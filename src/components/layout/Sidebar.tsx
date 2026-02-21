@@ -3,12 +3,12 @@ import { useUIStore } from '../../stores/uiStore';
 import { findParentGroupForGroup } from '../../core/model/database';
 import { Dropdown, DropdownItem, DropdownDivider } from '../common/Dropdown';
 import { Button } from '../common/Button';
-
-const GROUP_ICONS: Record<number, string> = {
-  48: '📁',
-  49: '🗑️',
-  0: '🔐',
-};
+import {
+  FolderClosed,
+  Trash2,
+  KeyRound,
+  LayoutList,
+} from 'lucide-react';
 
 interface SidebarProps {
   onExportVault?: () => void;
@@ -69,8 +69,8 @@ export function Sidebar({
           `}
           style={{ paddingLeft: `${12 + depth * 12}px` }}
         >
-          <span className="text-base flex-shrink-0">
-            {GROUP_ICONS[group.iconId] || '📁'}
+          <span className="flex-shrink-0 text-[var(--text-secondary)]">
+            {group.iconId === 49 ? <Trash2 className="h-4 w-4" /> : group.iconId === 0 ? <KeyRound className="h-4 w-4" /> : <FolderClosed className="h-4 w-4" />}
           </span>
           <span className="truncate text-sm font-medium">{group.name}</span>
           
@@ -180,7 +180,7 @@ export function Sidebar({
             }
           `}
         >
-          <span className="text-base">📋</span>
+          <span className="text-[var(--text-secondary)]"><LayoutList className="h-4 w-4" /></span>
           <span className="text-sm font-medium">All Entries</span>
         </div>
         

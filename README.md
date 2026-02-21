@@ -3,6 +3,28 @@
 Calix Pass is a local-first password manager built with Electron, React, and
 TypeScript, with KDBX-compatible vault parsing and serialization.
 
+## Features
+
+- Local-first encrypted vaults (`.kdbx`) with folder-based storage.
+- Master password policy validation (length, uppercase, lowercase, number, special char).
+- Vault picker with functional sidebar filters:
+  - All Vaults
+  - Recent (last 7 days)
+  - Favorites
+  - Shared
+  - Tagged
+- Per-vault metadata preferences (favorite/shared/tags) persisted locally.
+- Modern iconography using `lucide-react` (clean SaaS style, no emoji-based vault icons).
+- Entry creation by type with dynamic fields:
+  - Password
+  - SSH Key
+  - Payment Card
+  - Secure Note
+  - Identity
+- Password visibility toggles and generator integration in typed entries.
+- Recycle Bin lifecycle (restore, permanent delete, empty bin).
+- Import/export flows for vault files.
+
 ## Development
 
 ```bash
@@ -15,6 +37,7 @@ npm run dev
 ```bash
 npm run typecheck
 npm run build
+npm run test:smoke
 ```
 
 ## Windows Packaging

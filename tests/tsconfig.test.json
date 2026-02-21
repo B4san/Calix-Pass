@@ -11,6 +11,8 @@
   },
   "include": [
     "../tests/security.test.ts",
-    "../src/shared/security/masterPasswordPolicy.ts"
+    "../src/shared/security/masterPasswordPolicy.ts",
+    "../src/components/vault/vaultPickerUtils.ts",
+    "../src/components/entry/entryTypes.ts"
   ]
 }
