@@ -13,9 +13,9 @@
     "start": "electron-vite preview",
     "postinstall": "electron-builder install-app-deps",
     "package": "npm run package:win",
-    "package:win": "electron-builder --config config/electron-builder.yml --win --publish never",
-    "package:win:dir": "electron-builder --config config/electron-builder.yml --win --dir",
-    "package:win:publish": "electron-builder --config config/electron-builder.yml --win --publish always",
+    "package:win": "electron-builder --config config/electron-builder.yml --win nsis --publish never",
+    "package:win:dir": "electron-builder --config config/electron-builder.yml --win nsis --dir",
+    "package:win:publish": "electron-builder --config config/electron-builder.yml --win nsis --publish always",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts,.tsx"
   },
