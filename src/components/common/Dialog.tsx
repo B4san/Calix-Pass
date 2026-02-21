@@ -7,7 +7,7 @@ interface DialogProps {
   title?: string;
   description?: string;
   children?: ReactNode;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
 export function Dialog({ open, onClose, title, description, children, size = 'md' }: DialogProps) {
@@ -32,7 +32,8 @@ export function Dialog({ open, onClose, title, description, children, size = 'md
   const sizeClasses = {
     sm: 'max-w-sm',
     md: 'max-w-md',
-    lg: 'max-w-lg',
+    lg: 'max-w-3xl',
+    xl: 'max-w-5xl',
   };
   
   return createPortal(
@@ -51,6 +52,7 @@ export function Dialog({ open, onClose, title, description, children, size = 'md
           rounded-3xl
           shadow-[0_28px_70px_rgba(8,25,66,0.2)]
           border border-[#dfe5f1]
+          max-h-[92vh]
           overflow-hidden
           animate-in fade-in zoom-in-95 duration-200
         `}
@@ -72,7 +74,7 @@ export function Dialog({ open, onClose, title, description, children, size = 'md
           </div>
         )}
         
-        <div className="p-7 pt-0">
+        <div className="max-h-[calc(92vh-72px)] overflow-y-auto p-7 pt-0">
           {children}
         </div>
       </div>

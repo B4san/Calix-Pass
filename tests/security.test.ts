@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import { createVaultId, validateMasterPasswordStrength } from '../src/shared/security/masterPasswordPolicy';
 import { filterVaultsByView, normalizeTags, createDefaultVaultPickerPrefs } from '../src/components/vault/vaultPickerUtils';
 import { buildEntryFields, detectEntryType } from '../src/components/entry/entryTypes';
@@ -81,4 +82,9 @@ test('buildEntryFields creates typed fields and detectEntryType reads them', () 
     binaries: {},
   };
   assert.equal(detectEntryType(entry as any), 'ssh-key');
+});
+
+test('app icon assets should exist for build and renderer', () => {
+  assert.equal(existsSync('build/icon.png'), true);
+  assert.equal(existsSync('public/icon.png'), true);
 });

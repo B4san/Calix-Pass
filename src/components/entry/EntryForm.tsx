@@ -87,69 +87,73 @@ export function EntryForm({
       open={open}
       onClose={onClose}
       title={entry ? 'Edit Entry' : 'New Entry'}
-      size="md"
+      size="xl"
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Entry name"
-          required
-          autoFocus
-        />
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="grid gap-4 rounded-2xl border border-[#e4e9f4] bg-[#f8faff] p-4 md:grid-cols-2">
+          <Input
+            label="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Entry name"
+            required
+            autoFocus
+          />
 
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-[#243148]">Type</label>
-          <select
-            value={entryType}
-            onChange={(e) => {
-              const nextType = e.target.value as EntryType;
-              setEntryType(nextType);
-              setFieldValues(initializeFieldsForType(nextType, entry));
-            }}
-            className="w-full rounded-xl border border-[#d9e0ef] bg-white px-4 py-2 text-[#1f2a3d] outline-none focus:border-[#2756f6] focus:ring-2 focus:ring-[#2756f6]/20"
-          >
-            {ENTRY_TYPE_DEFINITIONS.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.label} - {item.description}
-              </option>
-            ))}
-          </select>
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-[#243148]">Type</label>
+            <select
+              value={entryType}
+              onChange={(e) => {
+                const nextType = e.target.value as EntryType;
+                setEntryType(nextType);
+                setFieldValues(initializeFieldsForType(nextType, entry));
+              }}
+              className="w-full rounded-xl border border-[#d9e0ef] bg-white px-4 py-2 text-[#1f2a3d] outline-none focus:border-[#2756f6] focus:ring-2 focus:ring-[#2756f6]/20"
+            >
+              {ENTRY_TYPE_DEFINITIONS.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.label} - {item.description}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        {definition.fields.map((field) => (
-          <div key={field.key}>
-            {field.inputType === 'textarea' ? (
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-[#243148]">{field.label}</label>
-                <textarea
-                  value={fieldValues[field.key] || ''}
-                  onChange={(e) => setFieldValues((prev) => ({ ...prev, [field.key]: e.target.value }))}
-                  placeholder={field.placeholder}
-                  rows={field.key === 'PrivateKey' ? 5 : 3}
-                  className="w-full resize-none rounded-xl border border-[#d9e0ef] bg-white px-4 py-2 text-[#1f2a3d] outline-none focus:border-[#2756f6] focus:ring-2 focus:ring-[#2756f6]/20"
-                />
-              </div>
-            ) : (
-              <div>
-                <Input
-                  label={field.label}
-                  type={field.inputType === 'password' ? 'password' : 'text'}
-                  value={fieldValues[field.key] || ''}
-                  onChange={(e) => setFieldValues((prev) => ({ ...prev, [field.key]: e.target.value }))}
-                  placeholder={field.placeholder}
-                  showPasswordToggle={field.protected}
-                />
-                {field.key === 'Password' && (
-                  <Button type="button" variant="secondary" size="sm" className="mt-2 !rounded-xl" onClick={onOpenGenerator}>
-                    Generate Password
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+        <div className="grid gap-4 md:grid-cols-2">
+          {definition.fields.map((field) => (
+            <div key={field.key} className={field.inputType === 'textarea' ? 'md:col-span-2' : ''}>
+              {field.inputType === 'textarea' ? (
+                <div>
+                  <label className="mb-1.5 block text-sm font-medium text-[#243148]">{field.label}</label>
+                  <textarea
+                    value={fieldValues[field.key] || ''}
+                    onChange={(e) => setFieldValues((prev) => ({ ...prev, [field.key]: e.target.value }))}
+                    placeholder={field.placeholder}
+                    rows={field.key === 'PrivateKey' ? 7 : 4}
+                    className="w-full resize-none rounded-xl border border-[#d9e0ef] bg-white px-4 py-2 text-[#1f2a3d] outline-none focus:border-[#2756f6] focus:ring-2 focus:ring-[#2756f6]/20"
+                  />
+                </div>
+              ) : (
+                <div>
+                  <Input
+                    label={field.label}
+                    type={field.inputType === 'password' ? 'password' : 'text'}
+                    value={fieldValues[field.key] || ''}
+                    onChange={(e) => setFieldValues((prev) => ({ ...prev, [field.key]: e.target.value }))}
+                    placeholder={field.placeholder}
+                    showPasswordToggle={field.protected}
+                  />
+                  {field.key === 'Password' && (
+                    <Button type="button" variant="secondary" size="sm" className="mt-2 !rounded-xl" onClick={onOpenGenerator}>
+                      Generate Password
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
 
         <div>
           <label className="mb-1.5 block text-sm font-medium text-[#243148]">Notes</label>
@@ -157,7 +161,7 @@ export function EntryForm({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Additional notes..."
-            rows={3}
+            rows={4}
             className="w-full resize-none rounded-xl border border-[#d9e0ef] bg-white px-4 py-2 text-[#1f2a3d] outline-none focus:border-[#2756f6] focus:ring-2 focus:ring-[#2756f6]/20"
           />
         </div>
