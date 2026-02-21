@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%; /* #1F2937 */
+    
+    --primary: 221 83% 53%; /* #2563EB */
+    --primary-foreground: 210 40% 98%;
+    
+    --muted: 220 13% 91%; /* #F3F4F6 */
+    --muted-foreground: 215 16% 47%; /* #6B7280 */
+    
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    
+    --radius: 1rem;
+  }
+
+  body {
+    @apply bg-white text-secondary font-sans antialiased;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight text-secondary;
+  }
+}
+
+@layer components {
+  /* Common component classes */
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary/90 rounded-full px-6 py-2 font-medium transition-colors;
+  }
+  
+  .btn-ghost {
+    @apply bg-transparent text-secondary hover:bg-border-subtle rounded-full px-4 py-2 font-medium transition-colors;
+  }
+  
+  .input-pill {
+    @apply rounded-full border border-border-subtle px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-white text-secondary placeholder-muted-foreground;
+  }
+  
+  .card {
+    @apply bg-white rounded-2xl border border-border-subtle shadow-sm p-6;
+  }
+}
