@@ -8,4 +8,4 @@
 - [x] Actualizar README con capacidades actuales.
 - [x] Ampliar `test:smoke` con casos de filtros/tags/entry-types.
 - [x] Ejecutar `npm run test:smoke`, `npm run typecheck`, `npm run build`.
-- [ ] Publicar release 0.2.0 con tag y push.
+- [x] Publicar release 0.2.0 con tag y push.
