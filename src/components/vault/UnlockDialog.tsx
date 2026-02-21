@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Dialog } from '../common/Dialog';
 import { Button } from '../common/Button';
 import { Input } from '../common/Input';
+import { validateMasterPassword } from '../../storage/electron';
 
 interface UnlockDialogProps {
   open: boolean;
@@ -27,8 +28,9 @@ export function UnlockDialog({ open, vaultName, onUnlock, onCancel, error, loadi
     
     try {
       await onUnlock(password);
-    } catch {
-      setLocalError('Incorrect password');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Incorrect password';
+      setLocalError(message);
     }
   };
   
@@ -38,13 +40,13 @@ export function UnlockDialog({ open, vaultName, onUnlock, onCancel, error, loadi
     <Dialog open={open} onClose={onCancel || (() => {})} size="sm">
       <form onSubmit={handleSubmit}>
         <div className="text-center mb-6">
-          <div className="w-14 h-14 mx-auto mb-4 rounded-xl bg-[var(--navy-deep)] flex items-center justify-center">
-            <svg className="w-7 h-7 text-[var(--amber-400)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-[#edf3ff] flex items-center justify-center">
+            <svg className="w-7 h-7 text-[#2756f6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-[var(--text-primary)]">{vaultName}</h2>
-          <p className="text-sm text-[var(--text-secondary)] mt-1">Enter your master password to unlock</p>
+          <h2 className="text-lg font-semibold text-[#1f2a3d]">{vaultName}</h2>
+          <p className="text-sm text-[#6f7b93] mt-1">Enter your master password to unlock</p>
         </div>
         
         <div className="space-y-4">
@@ -56,6 +58,7 @@ export function UnlockDialog({ open, vaultName, onUnlock, onCancel, error, loadi
             placeholder="Enter master password"
             error={displayError}
             autoFocus
+            showPasswordToggle
           />
           
           <div className="flex gap-3 pt-2">
@@ -98,20 +101,22 @@ export function CreateVaultDialog({ open, onCreate, onClose, error, loading }: C
       return;
     }
     
-    if (password.length < 8) {
-      setLocalError('Password must be at least 8 characters');
-      return;
-    }
-    
-    if (password !== confirmPassword) {
-      setLocalError('Passwords do not match');
-      return;
-    }
-    
     try {
+      const validation = await validateMasterPassword(password);
+      if (!validation.valid) {
+        setLocalError(validation.errors[0] ?? 'Master password is too weak');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        setLocalError('Passwords do not match');
+        return;
+      }
+
       await onCreate(name.trim(), password, createStarterGroups);
-    } catch {
-      setLocalError('Failed to create vault');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to create vault';
+      setLocalError(message);
     }
   };
   
@@ -134,6 +139,7 @@ export function CreateVaultDialog({ open, onCreate, onClose, error, loading }: C
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Create a strong password"
+          showPasswordToggle
         />
         
         <Input
@@ -143,18 +149,19 @@ export function CreateVaultDialog({ open, onCreate, onClose, error, loading }: C
           onChange={(e) => setConfirmPassword(e.target.value)}
           placeholder="Confirm your password"
           error={displayError}
+          showPasswordToggle
         />
         
-        <p className="text-xs text-[var(--text-muted)]">
-          This password cannot be recovered. Make sure to remember it.
+        <p className="text-xs text-[#6f7b93]">
+          Use at least 12 characters including uppercase, lowercase, number, and special symbol.
         </p>
 
-        <label className="flex items-start gap-2 text-sm text-[var(--text-secondary)]">
+        <label className="flex items-start gap-2 text-sm text-[#4f5d75]">
           <input
             type="checkbox"
             checked={createStarterGroups}
             onChange={(e) => setCreateStarterGroups(e.target.checked)}
-            className="mt-0.5 h-4 w-4 rounded border-[var(--control-border)] text-[var(--accent)] focus:ring-[var(--accent)]"
+            className="mt-0.5 h-4 w-4 rounded border-[#bfcce2] text-[#2756f6] focus:ring-[#2756f6]"
           />
           <span>Create starter project groups (Personal, Work, Projects, Finance)</span>
         </label>

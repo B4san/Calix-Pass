@@ -67,6 +67,11 @@ interface AppSettings {
   vaultsPath?: string;
 }
 
+interface PasswordValidationResult {
+  valid: boolean;
+  errors: string[];
+}
+
 async function loadSettings(): Promise<AppSettings> {
   try {
     const settingsFile = await getSettingsPath();
@@ -148,7 +153,13 @@ async function handleWriteVault(_event: any, id: string, data: Uint8Array): Prom
   await saveVaultsMeta(vaults);
 }
 
-async function handleCreateVault(_event: any, name: string): Promise<VaultMeta> {
+async function handleCreateVault(_event: any, name: string, masterPassword?: string): Promise<VaultMeta> {
+  if (typeof masterPassword === 'string') {
+    const validation = validateMasterPasswordStrength(masterPassword);
+    if (!validation.valid) {
+      throw new Error(validation.errors[0]);
+    }
+  }
   const folder = await ensureUserFolder();
   const safeName = name.trim() || 'My Vault';
   const id = crypto.randomUUID();
@@ -168,6 +179,37 @@ async function handleCreateVault(_event: any, name: string): Promise<VaultMeta> 
   await saveVaultsMeta(vaults);
   
   return vault;
+}
+
+function validateMasterPasswordStrength(password: string): PasswordValidationResult {
+  const errors: string[] = [];
+  if (password.length < 12) {
+    errors.push('Master password must contain at least 12 characters.');
+  }
+  if (!/[A-Z]/.test(password)) {
+    errors.push('Master password must include at least one uppercase letter.');
+  }
+  if (!/[a-z]/.test(password)) {
+    errors.push('Master password must include at least one lowercase letter.');
+  }
+  if (!/[0-9]/.test(password)) {
+    errors.push('Master password must include at least one number.');
+  }
+  if (!/[^A-Za-z0-9]/.test(password)) {
+    errors.push('Master password must include at least one special character.');
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+
+async function handleValidateMasterPassword(_event: any, password: string): Promise<PasswordValidationResult> {
+  if (typeof password !== 'string') {
+    return {
+      valid: false,
+      errors: ['Master password must be a text value.'],
+    };
+  }
+  return validateMasterPasswordStrength(password);
 }
 
 async function handleDeleteVault(_event: any, id: string): Promise<void> {
@@ -375,6 +417,7 @@ app.whenReady().then(async () => {
   ipcMain.handle('storage:selectImportFile', handleSelectImportFile);
   ipcMain.handle('storage:selectExportFile', handleSelectExportFile);
   ipcMain.handle('storage:getInitialPath', () => settings.vaultsPath || null);
+  ipcMain.handle('security:validateMasterPassword', handleValidateMasterPassword);
   
   createWindow();
 

@@ -8,6 +8,11 @@ export interface VaultMeta {
   lastAccessedAt: string;
 }
 
+export interface PasswordValidationResult {
+  valid: boolean;
+  errors: string[];
+}
+
 export interface ElectronAPI {
   selectFolder: () => Promise<{ path: string; vaults: VaultMeta[] } | null>;
   getVaultsPath: () => Promise<string | null>;
@@ -15,7 +20,8 @@ export interface ElectronAPI {
   listVaults: () => Promise<VaultMeta[]>;
   readVault: (id: string) => Promise<Uint8Array>;
   writeVault: (id: string, data: Uint8Array) => Promise<void>;
-  createVault: (name: string) => Promise<VaultMeta>;
+  createVault: (name: string, password?: string) => Promise<VaultMeta>;
+  validateMasterPassword: (password: string) => Promise<PasswordValidationResult>;
   deleteVault: (id: string) => Promise<void>;
   exportVault: (id: string) => Promise<{ data: Uint8Array; name: string }>;
   writeExportFile: (targetPath: string, data: Uint8Array) => Promise<void>;
@@ -32,7 +38,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   readVault: (id: string) => ipcRenderer.invoke('storage:readVault', id),
   writeVault: (id: string, data: Uint8Array) => 
     ipcRenderer.invoke('storage:writeVault', id, data),
-  createVault: (name: string) => ipcRenderer.invoke('storage:createVault', name),
+  createVault: (name: string, password?: string) => ipcRenderer.invoke('storage:createVault', name, password),
+  validateMasterPassword: (password: string) => ipcRenderer.invoke('security:validateMasterPassword', password),
   deleteVault: (id: string) => ipcRenderer.invoke('storage:deleteVault', id),
   exportVault: (id: string) => ipcRenderer.invoke('storage:exportVault', id),
   writeExportFile: (targetPath: string, data: Uint8Array) =>

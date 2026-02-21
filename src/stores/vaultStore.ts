@@ -5,6 +5,7 @@ import {
   readVaultData, 
   writeVaultData, 
   createVaultMeta, 
+  deleteVault,
   VaultMeta, 
   listVaults as listStoredVaults,
   selectFolder,
@@ -109,16 +110,26 @@ export const useVaultStore = create<VaultState & VaultActions>((set, get) => ({
   
   createVault: async (name: string, password: string, options?: { createStarterGroups?: boolean }) => {
     set({ isLoading: true, error: null });
+    let meta: VaultMeta | null = null;
     try {
-      const meta = await createVaultMeta(name);
+      meta = await createVaultMeta(name, password);
       const database = createEmptyDatabase(name);
       if (options?.createStarterGroups ?? true) {
         addStarterProjectGroups(database);
       }
       const header = createDefaultHeader();
       
-      const data = await serializeKDBX(database, header, password);
-      await writeVaultData(meta.id, data);
+      try {
+        const data = await serializeKDBX(database, header, password);
+        await writeVaultData(meta.id, data);
+      } catch (writeError) {
+        try {
+          await deleteVault(meta.id);
+        } catch {
+          // Keep original error as primary failure reason.
+        }
+        throw writeError;
+      }
       
       set({
         database,

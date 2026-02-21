@@ -38,8 +38,8 @@ export function Dialog({ open, onClose, title, description, children, size = 'md
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" 
+      <div
+        className="absolute inset-0 bg-[#0d1832]/35 backdrop-blur-[3px] transition-opacity"
         onClick={onClose}
       />
       
@@ -47,10 +47,10 @@ export function Dialog({ open, onClose, title, description, children, size = 'md
       <div
         className={`
           relative w-full ${sizeClasses[size]}
-          bg-white
-          rounded-2xl
-          shadow-xl
-          border border-border-subtle
+          bg-white/95
+          rounded-3xl
+          shadow-[0_28px_70px_rgba(8,25,66,0.2)]
+          border border-[#dfe5f1]
           overflow-hidden
           animate-in fade-in zoom-in-95 duration-200
         `}
@@ -58,21 +58,21 @@ export function Dialog({ open, onClose, title, description, children, size = 'md
         aria-modal="true"
       >
         {(title || description) && (
-          <div className="px-6 pt-6 pb-4">
+          <div className="px-7 pt-7 pb-4">
             {title && (
-              <h2 className="text-xl font-semibold text-secondary leading-none tracking-tight">
+              <h2 className="text-xl font-semibold text-[#1f2a3d] leading-none tracking-tight">
                 {title}
               </h2>
             )}
             {description && (
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm text-[#72819a]">
                 {description}
               </p>
             )}
           </div>
         )}
         
-        <div className="p-6 pt-0">
+        <div className="p-7 pt-0">
           {children}
         </div>
       </div>

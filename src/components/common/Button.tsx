@@ -11,12 +11,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', loading, className = '', disabled, children, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium transition-colors rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+    const baseStyles = 'inline-flex items-center justify-center font-medium transition-all rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
     
     const variants: Record<ButtonVariant, string> = {
-      primary: 'bg-primary text-white hover:bg-primary/90 shadow-sm border border-transparent',
-      secondary: 'bg-white text-secondary border border-border-subtle hover:bg-muted shadow-sm',
-      ghost: 'bg-transparent text-secondary hover:bg-muted border border-transparent',
+      primary: 'bg-[#2756f6] text-white hover:bg-[#1f49db] shadow-[0_10px_24px_rgba(39,86,246,0.28)] border border-transparent',
+      secondary: 'bg-white text-[#1f2a3d] border border-[#d9e0ef] hover:bg-[#f4f7ff] shadow-sm',
+      ghost: 'bg-transparent text-[#1f2a3d] hover:bg-[#f4f7ff] border border-transparent',
       danger: 'bg-red-600 text-white hover:bg-red-700 shadow-sm border border-transparent',
     };
     

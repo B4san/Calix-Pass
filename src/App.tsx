@@ -33,6 +33,7 @@ function App() {
     database, 
     isLocked, 
     isLoading,
+    error,
     needsFolderSelection,
     vaultsPath,
     initApp,
@@ -263,20 +264,43 @@ function App() {
   return (
     <>
       {view === 'init' && (
-        <div className="min-h-screen bg-background flex items-center justify-center p-6">
-          <div className="max-w-md text-center">
-            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-primary/10 flex items-center justify-center shadow-sm">
-              <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
+        <div className="min-h-screen bg-app-canvas flex items-center justify-center p-6">
+          <div className="w-full max-w-[880px] rounded-3xl border border-[#d8deec] bg-white p-8 shadow-[0_28px_70px_rgba(8,25,66,0.15)] md:p-10">
+            <div className="mb-10 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-[#2756f6] text-white grid place-items-center text-sm font-bold">CP</div>
+              <div>
+                <h1 className="text-xl font-semibold text-[#1e2a3d]">Calix Pass</h1>
+                <p className="text-sm text-[#74819b]">Desktop Password Vault</p>
+              </div>
             </div>
-            <h1 className="text-2xl font-bold text-secondary mb-2">Welcome to Calix Pass</h1>
-            <p className="text-muted-foreground mb-6">
-              Select a folder where your vaults will be stored. This folder will contain your encrypted password files.
-            </p>
-            <Button variant="primary" size="lg" onClick={handleSelectFolder} loading={isLoading}>
-              Select Storage Folder
-            </Button>
+            <div className="grid gap-8 md:grid-cols-[1.1fr_1fr]">
+              <div>
+                <h2 className="text-3xl font-semibold leading-tight text-[#1f2a3d]">Choose where your encrypted vaults live.</h2>
+                <p className="mt-4 text-sm leading-6 text-[#6f7b93]">
+                  Select a dedicated folder for your vault files and metadata. Calix Pass keeps your
+                  credentials encrypted at rest and only unlocks them with your master password.
+                </p>
+                <Button variant="primary" size="lg" className="mt-7 !rounded-xl" onClick={handleSelectFolder} loading={isLoading}>
+                  Select Storage Folder
+                </Button>
+              </div>
+              <div className="rounded-2xl border border-[#e4e8f2] bg-[#f8faff] p-5">
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#edf3ff]">
+                  <svg className="w-7 h-7 text-[#2756f6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7h6l2 2h10v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+                  </svg>
+                </div>
+                <p className="text-sm font-semibold text-[#2b3751]">Recommended setup</p>
+                <ul className="mt-3 space-y-2 text-sm text-[#64728d]">
+                  <li>Use an empty folder dedicated to vault storage.</li>
+                  <li>Keep backups in another physical location.</li>
+                  <li>Avoid shared folders unless strictly necessary.</li>
+                </ul>
+              </div>
+            </div>
+            <div className="mt-8 rounded-2xl border border-[#e6eaf4] bg-[#fbfcff] p-4 text-xs text-[#7f8aa3]">
+              Folder content: `vaults.json` metadata + encrypted `.kdbx` files.
+            </div>
           </div>
         </div>
       )}
@@ -298,6 +322,7 @@ function App() {
           vaultName={getVaultName(selectedVaultId)}
           onUnlock={handleUnlock}
           onCancel={() => { setSelectedVaultId(null); setView('picker'); }}
+          error={error || undefined}
           loading={isLoading}
         />
       )}
@@ -361,6 +386,7 @@ function App() {
         open={showCreateDialog && view === 'picker'}
         onCreate={handleCreateVault}
         onClose={() => setShowCreateDialog(false)}
+        error={error || undefined}
         loading={isLoading}
       />
       

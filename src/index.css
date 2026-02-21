@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,48 +5,73 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222 47% 11%; /* #1F2937 */
-    
-    --primary: 221 83% 53%; /* #2563EB */
+    --foreground: 222 33% 15%;
+    --primary: 224 91% 56%;
     --primary-foreground: 210 40% 98%;
-    
-    --muted: 220 13% 91%; /* #F3F4F6 */
-    --muted-foreground: 215 16% 47%; /* #6B7280 */
-    
+    --muted: 220 40% 97%;
+    --muted-foreground: 221 20% 44%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    
-    --radius: 1rem;
+    --card-foreground: 222 33% 15%;
+    --border: 223 29% 91%;
+    --input: 223 29% 91%;
+    --radius: 0.875rem;
+
+    --surface-base: #f5f7fb;
+    --surface-elevated: #ffffff;
+    --surface-inset: #f7f9ff;
+    --text-primary: #1f2a3d;
+    --text-secondary: #5f6d86;
+    --text-muted: #8794ac;
+    --accent: #2756f6;
+    --accent-muted: #edf3ff;
+    --navy-deep: #1234a6;
+    --navy-mid: #2756f6;
+    --amber-400: #ffc758;
+    --border-subtle: #e9edf5;
+    --border-default: #dbe2ef;
+    --control-bg: #ffffff;
+    --control-border: #d3dcef;
+    --success: #11835b;
+    --warning: #d28d0f;
+    --warning-muted: #fff4d6;
+    --error: #ce3048;
+    --error-muted: #feeaf0;
+    --slate-700: #334155;
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --shadow-card: 0 8px 20px rgba(31, 52, 112, 0.07);
+    --shadow-md: 0 12px 28px rgba(31, 52, 112, 0.12);
+    --shadow-lg: 0 16px 32px rgba(31, 52, 112, 0.18);
+    --shadow-elevated: 0 24px 44px rgba(31, 52, 112, 0.14);
+    --transition-fast: 160ms;
   }
 
   body {
-    @apply bg-white text-secondary font-sans antialiased;
+    margin: 0;
+    min-height: 100vh;
+    font-family: Inter, 'Segoe UI', 'SF Pro Text', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+    color: #1f2a3d;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(221, 230, 255, 0.65), transparent 40%),
+      radial-gradient(circle at 90% 10%, rgba(205, 228, 255, 0.55), transparent 35%),
+      #eef2f8;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Headings */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight text-secondary;
+    color: #1f2a3d;
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 }
 
 @layer components {
-  /* Common component classes */
-  .btn-primary {
-    @apply bg-primary text-white hover:bg-primary/90 rounded-full px-6 py-2 font-medium transition-colors;
-  }
-  
-  .btn-ghost {
-    @apply bg-transparent text-secondary hover:bg-border-subtle rounded-full px-4 py-2 font-medium transition-colors;
-  }
-  
-  .input-pill {
-    @apply rounded-full border border-border-subtle px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20 bg-white text-secondary placeholder-muted-foreground;
-  }
-  
-  .card {
-    @apply bg-white rounded-2xl border border-border-subtle shadow-sm p-6;
+  .bg-app-canvas {
+    background:
+      radial-gradient(circle at 12% 0%, rgba(210, 224, 252, 0.45), transparent 35%),
+      radial-gradient(circle at 80% 2%, rgba(231, 238, 255, 0.65), transparent 40%),
+      #edf1f7;
   }
 }
