@@ -8,7 +8,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, hint, className = '', id, showPasswordToggle = false, type, ...props }, ref) => {
+  ({ label, error, hint, className = '', id, showPasswordToggle = true, type, ...props }, ref) => {
     const generatedId = useId();
     const inputId = id || generatedId;
     const [showPassword, setShowPassword] = useState(false);
@@ -52,7 +52,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             <button
               type="button"
               onClick={() => setShowPassword((value) => !value)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full border border-[#d7e0f2] bg-white p-1.5 text-[#41506d] shadow-sm hover:bg-[#f4f7ff] hover:text-[#1f2a3d] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2756f6]/35"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
               title={showPassword ? 'Hide password' : 'Show password'}
             >

@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "outDir": "./dist",
+    "rootDir": "..",
+    "declaration": false,
+    "sourceMap": false
+  },
+  "include": [
+    "../tests/security.test.ts",
+    "../src/shared/security/masterPasswordPolicy.ts"
+  ]
+}

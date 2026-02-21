@@ -1,6 +1,6 @@
 {
   "name": "calix-pass",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Secure password manager with KDBX support",
   "author": "Sebastian Flores Peralta",
@@ -17,7 +17,8 @@
     "package:win:dir": "electron-builder --config config/electron-builder.yml --win nsis --dir",
     "package:win:publish": "electron-builder --config config/electron-builder.yml --win nsis --publish always",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src --ext .ts,.tsx"
+    "lint": "eslint src --ext .ts,.tsx",
+    "test:smoke": "tsc -p tests/tsconfig.test.json && node --test tests/dist/tests/security.test.js"
   },
   "dependencies": {
     "electron-store": "^8.1.0",
